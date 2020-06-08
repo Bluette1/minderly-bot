@@ -1,7 +1,7 @@
 require 'telegram/bot'
 
-require_relative './lib/message_handler'
-require_relative './lib/app_config'
+require_relative '../lib/message_handler'
+require_relative '../lib/app_config'
 
 config = AppConfig.new
 
