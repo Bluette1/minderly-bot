@@ -10,8 +10,13 @@ class MessageSender
   end
 
   def send
-    puts"sending '#{text}' to #{@chat.username}"
+    puts"sending '#{text}' to @#{@chat.username}"
     bot.api.send_message(chat_id: @chat.id, text: text)
+  end
+  def send_wishes_message group_id
+    bot.api.send_message(chat_id: group_id, text: text)
   end
 
 end
+
+

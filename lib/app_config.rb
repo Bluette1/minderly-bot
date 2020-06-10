@@ -1,27 +1,56 @@
 class AppConfig
   
-  attr_reader :users, :token, :commands
+  attr_reader :users, :token, :commands, :channel_id, :group_id
 
   def initialize()
     @users = [] 
-    @token = get_token
-    @commands = get_commands
+    @token = retrieve_token
+    @commands = retrieve_commands
+    @channel_id = retrieve_channel_id
+    @group_id = retrieve_group_id
   end
 
 
   def add_user(user)
+    @users.each do |existing_user|
+      if existing_user.chat_id == user.chat_id
+        return false
+      end
+    end
     @users << user
+    return true
+  end
+
+  def update_user(user)
+    @users.each do |existing_user|
+      if existing_user.chat_id == user.chat_id
+        @users.delete(existing_user)
+        @users << user
+        return true
+      end
+    end
+    return false
   end
 
   private
 
-  def get_token
-    token = '1223539527:AAGBZYp4D7QL7P7xJtUm7EINhOymX9MezwE'
+  def retrieve_token
+    token = '1275428552:AAF5BvjOOhCanGGNg6Qk5pPfVW0yjlmKi7s'
     token
   end
 
-  def get_commands
-    commands = ['/start', '/help', '/stop', '/subscribe', '/my_birthday', '/birthday']
+  def retrieve_commands
+    commands = ['/start', '/help', '/stop', '/add_my_birthday', '/add_birthday', '/add_anniversary', '/subscribe', '/update']
     commands
+  end
+
+  def retrieve_group_id
+    group_id = '-485549964'
+    group_id
+  end
+
+  def retrieve_channel_id
+    channel_id = '-1001482906311'
+    channel_id
   end
 end
