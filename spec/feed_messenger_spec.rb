@@ -1,16 +1,16 @@
 require_relative '../lib/feed_messenger'
 
 describe FeedMessenger do
-    let(:bot) {{}}
-    let(:config){{}}
+  let(:bot) { {} }
+  let(:config) { {} }
 
-    describe '#initialise' do
-        let(:options) {{bot: bot, config: config}}
-        let(:feeder) { FeedMessenger.new(options)}
+  describe '#initialise' do
+    let(:options) { { bot: bot, config: config } }
+    let(:feeder) { FeedMessenger.new(options) }
 
-        it 'returns the correct instance variables' do
-            expect(feeder.bot).to eq(bot)
-            expect(feeder.config).to eq(config)
-        end
-    end   
+    it 'returns the correct instance variables' do
+      expect(feeder.bot).to eq(bot)
+      expect(feeder.config).to eq(config)
+    end
+  end
 end

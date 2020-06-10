@@ -19,7 +19,7 @@ class ImportantDayChecker
   end
 
   private
-  
+
   def check_important_days
     users = config.users
     users.each do |user|
@@ -31,11 +31,11 @@ class ImportantDayChecker
     end
   end
 
-  def check_user_birthday user
+  def check_user_birthday(user)
     chat_id = user.chat_id
     today = Date.today
-    if user.birthday.month == today.month and user.birthday.day == today.day
-      text = "Happy birthday to you!"
+    if user.birthday.month == today.month and user.birthday.day == today.day # rubocop:todo Style/GuardClause
+      text = 'Happy birthday to you!'
       MessageSender.new(
         bot: bot, chat: nil, text: text
       ).send_message chat_id
@@ -46,7 +46,6 @@ class ImportantDayChecker
     chat_id = user.chat_id
     today = Date.today
     important_days.each do |name, date|
-      
       next unless (today.month == date.month) && (today.day == date.day)
 
       text = "Happy #{day} @#{name}!"
@@ -61,5 +60,4 @@ class ImportantDayChecker
       ).send_message config.channel_id
     end
   end
-
 end
