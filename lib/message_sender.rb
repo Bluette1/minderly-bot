@@ -1,6 +1,6 @@
 require_relative './app_config'
 
-class MessageSender # rubocop:todo Style/Documentation
+class MessageSender
   attr_reader :bot, :text
 
   def initialize(options)

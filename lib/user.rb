@@ -1,4 +1,4 @@
-class User # rubocop:todo Style/Documentation
+class User
   attr_reader :birthday, :important_days, :chat_id
 
   def initialize(user_details)

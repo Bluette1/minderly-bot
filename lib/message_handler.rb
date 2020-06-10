@@ -1,7 +1,6 @@
 require_relative './message_sender'
 require_relative './user'
 require_relative './important_day_checker'
-# rubocop:todo Style/Documentation
 class MessageHandler # rubocop:todo Metrics/ClassLength
   attr_reader :message, :bot, :user_details
 
@@ -23,7 +22,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
   # rubocop:todo Metrics/PerceivedComplexity
   # rubocop:todo Metrics/MethodLength
-  # rubocop:todo Metrics/AbcSize
   def handle # rubocop:todo Metrics/CyclomaticComplexity
     command = if @proceed
                 @previous_command
@@ -79,7 +77,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       prompt_user command
     end
   end
-  # rubocop:enable Metrics/AbcSize
+
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
 
@@ -100,7 +98,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
-  def add_my_birthday # rubocop:todo Metrics/MethodLength
+  def add_my_birthday
     @user_details[:chat_id] = message.chat.id
     valid = true
     begin
@@ -120,7 +118,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   end
 
   # rubocop:todo Metrics/MethodLength
-  def add_birthday # rubocop:todo Metrics/AbcSize
+  def add_birthday
     if message.text.nil?
       prompt_user '/add_birthday'
     else
@@ -145,7 +143,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     # rubocop:todo Style/CommentedKeyword
   end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
 
-  def add_anniversary # rubocop:todo Metrics/AbcSize
+  def add_anniversary
     if message.text.nil?
       prompt_user '/add_anniversary'
     else
@@ -234,4 +232,3 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 end
-# rubocop:enable Style/Documentation

@@ -1,4 +1,4 @@
-class AppConfig # rubocop:todo Style/Documentation
+class AppConfig
   attr_reader :users, :token, :commands, :channel_id, :group_id
 
   def initialize
@@ -35,7 +35,7 @@ class AppConfig # rubocop:todo Style/Documentation
     token
   end
 
-  def retrieve_commands # rubocop:todo Metrics/MethodLength
+  def retrieve_commands
     commands = [
       '/start',
       '/help',

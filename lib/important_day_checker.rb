@@ -1,6 +1,6 @@
 require_relative './message_sender'
 
-class ImportantDayChecker # rubocop:todo Style/Documentation
+class ImportantDayChecker
   attr_reader :config, :bot
 
   def initialize(options)
@@ -18,8 +18,7 @@ class ImportantDayChecker # rubocop:todo Style/Documentation
     end
   end
 
-  # rubocop:todo Metrics/MethodLength
-  def check_days(important_days, day, chat_id) # rubocop:todo Metrics/AbcSize
+  def check_days(important_days, day, chat_id)
     important_days.each do |name, date|
       today = Date.today
       next unless (today.month == date.month) && (today.day == date.day)
@@ -36,7 +35,6 @@ class ImportantDayChecker # rubocop:todo Style/Documentation
       ).send_wishes_message config.channel_id
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def check_today
     Thread.new do
