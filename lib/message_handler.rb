@@ -117,7 +117,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
-  # rubocop:todo Metrics/MethodLength
   def add_birthday
     if message.text.nil?
       prompt_user '/add_birthday'
@@ -142,8 +141,9 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
     # rubocop:todo Style/CommentedKeyword
   end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
+  # rubocop:enable Style/CommentedKeyword
 
-  def add_anniversary
+  def add_anniversary # rubocop:todo Metrics/MethodLength
     if message.text.nil?
       prompt_user '/add_anniversary'
     else
@@ -165,7 +165,9 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         prompt_user '/add_anniversary'
       end
     end
+    # rubocop:todo Style/CommentedKeyword
   end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
+  # rubocop:enable Style/CommentedKeyword
 
   def update_user
     new_user = User.new(user_details)
