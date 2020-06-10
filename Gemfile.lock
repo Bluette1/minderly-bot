@@ -23,6 +23,7 @@ GEM
     rexml (3.2.4)
     rss (0.2.9)
       rexml
+    spy (1.0.0)
     telegram-bot-ruby (0.12.0)
       faraday
       inflecto
@@ -41,6 +42,7 @@ PLATFORMS
 DEPENDENCIES
   pry
   rss
+  spy
   telegram-bot-ruby
   uri
 

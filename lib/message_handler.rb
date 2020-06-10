@@ -1,6 +1,7 @@
 require_relative './message_sender'
 require_relative './user'
 require_relative './important_day_checker'
+require_relative './feed_messenger'
 class MessageHandler # rubocop:todo Metrics/ClassLength
   attr_reader :message, :bot, :user_details
 
@@ -92,6 +93,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     if @config.add_user(user)
       send_message 'Your subscription was successful.'
       ImportantDayChecker.new(config: @config, bot: bot).check_today
+      FeedMessenger.new(config: @config, bot: bot).send_feed
+
     else
       send_message "You are already subscribed, please enter '/update'"\
        'to update your subscription'
@@ -174,6 +177,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     if @config.update_user(new_user)
       send_message 'Your subscription has been successfully updated'
       ImportantDayChecker.new(config: @config, bot: bot).check_today
+      FeedMessenger.new(config: @config, bot: bot).send_feed
     else
       send_message "The user subscription doesn't exist. Please press"\
        '/subscribe to subscribe'

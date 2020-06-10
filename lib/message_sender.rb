@@ -14,7 +14,7 @@ class MessageSender
     bot.api.send_message(chat_id: @chat.id, text: text)
   end
 
-  def send_wishes_message(group_id)
-    bot.api.send_message(chat_id: group_id, text: text)
+  def send_message(chat_id)
+    bot.api.send_message(chat_id: chat_id, text: text)
   end
 end
