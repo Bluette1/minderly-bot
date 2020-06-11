@@ -182,8 +182,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   def handle_update
     send_message 'Please enter either of the commands:' \
      " '/add_my_birthday', '/add_birthday', or '/add_anniversary'"\
-      " to update your birthday, and add birthdays and anniversaries to be"\
-      " reminded of respectively."
+      ' to update your birthday, and add birthdays and anniversaries to be'\
+      ' reminded of respectively.'
   end
 
   def update_user
