@@ -130,6 +130,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @steps = 0
       @proceed = false
       @previous_command = ''
+      @ongoing_update = false
       update_user
     end
   end
