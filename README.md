@@ -18,6 +18,30 @@ This is a capstone project at the end of the main Ruby curriculum at [Microverse
 
 [Live Demo]()
 
+### Run instructions 
+-  You can clone the GitHub repo and type `ruby ./bin/bot_runner.rb` in the terminal to run the bot locally. Alternatively, you can create an executable script to run it.
+- To add the bot to Telegram, one has to create a Telegram bot account for it using BotFather, and connect to it using the API obtained token.
+
+### How to use the bot
+Make sure the bot is running
+- In order to use MinderlyBot one has to have a Telegram account.
+- Ordinary users are able to interact with the bot via their Telegram accounts
+- The bot is also able to post messages to channels and groups if it is added as an administrator.
+
+### Available commands
+- Please enter any of the following commands: ["/start", "/help", "/stop", "/add_my_birthday", "/add_birthday", "/add_anniversary", "/subscribe", "/update"]
+
+### Possible errors
+- Incorrect entry for date:
+"Nick: 769887/22/98"
+- Bot Response:
+"invalid date: Incorrect format for birthday date entry."
+- Make sure you enter the date in the proposed format.
+- Correct entries for date
+    - "12/06/1993" for "/add_my_birthday"
+    - "Jenny: 10/05/1998" for "/add_birthday"
+    - "Megan and John: 12/06/2011" for "/add_"
+
 ## Authors
 
 👤 **Marylene Sawyer**
@@ -27,6 +51,7 @@ This is a capstone project at the end of the main Ruby curriculum at [Microverse
 
 
 # Acknowledgements
+- [Creating a Bot using the Telegram Bot API](https://tutorials.botsfloor.com/creating-a-bot-using-the-telegram-bot-api-5d3caed3266d#.13ywsygju)
 
 - There are great samples at [this site](https://core.telegram.org/bots/samples)
 - To read more about RSS feeds visit [this Medium site](https://medium.com/@krandles/rss-and-ruby-its-really-simple-a32a8654733a)

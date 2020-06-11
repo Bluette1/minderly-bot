@@ -105,7 +105,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @user_details[:chat_id] = message.chat.id
     valid = true
     begin
-      @user_details[:birthday] = Date.parse(message.text)
+      @user_details[:birthday] = Date.parse(message.text.strip)
     rescue StandardError => e
       send_message "#{e}: Incorrect format for birthday date entry."
       valid = false
@@ -124,10 +124,10 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     if message.text.nil?
       prompt_user '/add_birthday'
     else
-      birthday_entry = message.text.split(': ')
+      birthday_entry = message.text.split(':')
       valid = true
       begin
-        @birthdays[birthday_entry[0].capitalize] = Date.parse(birthday_entry[1])
+        @birthdays[birthday_entry[0].strip.capitalize] = Date.parse(birthday_entry[1].strip)
       rescue StandardError => e
         valid = false
         send_message "#{e}: Incorrect format for birthday date entry."
@@ -150,11 +150,11 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     if message.text.nil?
       prompt_user '/add_anniversary'
     else
-      anniversary_entry = message.text.split(': ')
+      anniversary_entry = message.text.split(':')
       valid = true
       begin
-        anniversary_date = Date.parse(anniversary_entry[1])
-        @anniversaries[anniversary_entry[0].capitalize] = anniversary_date
+        anniversary_date = Date.parse(anniversary_entry[1].strip)
+        @anniversaries[anniversary_entry[0].strip.capitalize] = anniversary_date
       rescue StandardError => e
         valid = false
         send_message "#{e}: Incorrect format for anniversary date entry."

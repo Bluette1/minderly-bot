@@ -72,15 +72,5 @@ class FeedMessenger
     MessageSender.new(
       bot: bot, chat: nil, text: link
     ).send_message chat_id
-    # MessageSender.new(
-    #   bot: bot, chat: nil, text: text
-    # ).send_message config.group_id
-    # MessageSender.new(
-    #   bot: bot, chat: nil, text: text
-    # ).send_message config.channel_id
   end
-
-  # Crono.perform(YourJob).every 1.day, at: {hour: 8, min: 00}
-  # https://github.com/plashchynski/crono
-  # https://stackoverflow.com/questions/59166469/how-to-schedule-a-telegram-bot-to-send-a-message
 end
