@@ -10,8 +10,10 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @anniversaries = {}
     @user_details = {}
     @proceed = false
+    @steps = 0
     @previous_command = ''
     @ongoing_subscribe = false
+    @ongoing_update = false
   end
 
   def update_params(options)
@@ -36,6 +38,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       handle_update
     when '/add_birthday'
       prompt_user command
+
     when '/add_my_birthday'
       prompt_user command
     when '/add_anniversary'
@@ -69,6 +72,69 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   def send_message(text)
     MessageSender.new(bot: bot, chat: message.chat, text: text).send
   end
+
+  # rubocop:todo Metrics/PerceivedComplexity
+  # rubocop:todo Metrics/MethodLength
+  def handle_update # rubocop:todo Metrics/CyclomaticComplexity
+    @ongoing_update = true
+    if @steps.zero?
+      @proceed = true
+      @previous_command = '/update'
+      @steps += 1
+      send_message 'Please  enter y[es] or n[o] if would like to update your birthday'
+    elsif @steps == 1
+
+      case message.text[0].downcase
+      when 'y'
+        @steps += 1
+        message.text = nil
+        @proceed = false
+        prompt_user '/add_my_birthday', '/update', true
+
+      when 'n'
+        @steps += 1
+        handle
+      end
+    elsif @steps == 2
+      @steps += 1
+      send_message 'Please  enter y[es] or n[o] if would like to update or add a birthday'
+
+    elsif @steps == 3
+
+      case message.text[0].downcase
+      when 'y'
+        @steps += 1
+        message.text = nil
+        @proceed = false
+        prompt_user '/add_birthday', '/update', true
+      when 'n'
+        @steps += 1
+        handle
+      end
+    elsif @steps == 4
+      @steps += 1
+      send_message 'Please  enter y[es] or n[o] if would like to update or add an anniversary'
+    elsif @steps == 5
+      case message.text[0].downcase
+      when 'y'
+        @steps += 1
+        message.text = nil
+        @proceed = false
+        prompt_user '/add_anniversary', '/update', true
+      when 'n'
+        @steps += 1
+        handle
+      end
+
+    else
+      @steps = 0
+      @proceed = false
+      @previous_command = ''
+      update_user
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def handle_subscribe(command) # rubocop:todo Metrics/MethodLength
     @ongoing_subscribe = true
@@ -108,21 +174,26 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   end
 
   def add_my_birthday
-    @user_details[:chat_id] = message.chat.id
-    valid = true
-    begin
-      @user_details[:birthday] = Date.parse(message.text.strip)
-    rescue StandardError => e
-      send_message "#{e}: Incorrect format for birthday date entry."
-      valid = false
-    end
-
-    if valid
-      send_message 'Your birthday has been successfully added.'
-      message.text = nil
-      next_action
-    else
+    if message.text.nil?
       prompt_user '/add_my_birthday'
+    else
+
+      @user_details[:chat_id] = message.chat.id
+      valid = true
+      begin
+        @user_details[:birthday] = Date.parse(message.text.strip)
+      rescue StandardError => e
+        send_message "#{e}: Incorrect format for birthday date entry."
+        valid = false
+      end
+
+      if valid
+        send_message 'Your birthday has been successfully added.'
+        message.text = nil
+        next_action
+      else
+        prompt_user '/add_my_birthday'
+      end
     end
   end
 
@@ -179,17 +250,14 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
   # rubocop:enable Style/CommentedKeyword
 
-  def handle_update
-    send_message 'Please enter either of the commands:' \
-     " '/add_my_birthday', '/add_birthday', or '/add_anniversary'"\
-      ' to update your birthday, and add birthdays and anniversaries to be'\
-      ' reminded of respectively.'
-  end
-
   def update_user
     new_user = User.new(user_details)
     if @config.update_user?(new_user)
-      send_message 'Your subscription has been successfully updated'
+      send_message 'Your subscription has been successfully updated' << "\n" \
+                   'You can use either of the commands:' \
+                  " '/add_my_birthday', '/add_birthday', or '/add_anniversary'"\
+                   ' to update your birthday, and add birthdays and anniversaries to be'\
+                   ' reminded of respectively.'
       ImportantDayChecker.new(config: @config, bot: bot).check_today
       FeedMessenger.new(config: @config, bot: bot).send_feed
     else
@@ -198,10 +266,10 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
-  def prompt_user(command)
+  def prompt_user(command, previous_command = '', proceed = false)
     if @proceed
-      @proceed = false
-      @previous_command = ''
+      @proceed = proceed
+      @previous_command = previous_command
       chose_action command
     else
       @proceed = true
@@ -213,6 +281,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   def prompt_subscribe
     @proceed = true
     @previous_command = '/subscribe'
+    handle
+  end
+
+  def prompt_update
+    @proceed = true
+    @previous_command = '/update'
     handle
   end
 
@@ -241,6 +315,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   def next_action
     if @ongoing_subscribe
       prompt_subscribe
+    elsif @ongoing_update
+      prompt_update
     else
       update_user
     end

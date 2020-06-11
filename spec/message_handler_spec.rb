@@ -16,6 +16,8 @@ describe MessageHandler do
       expect(handler.instance_variable_get(:@user_details)).to eq({})
       expect(handler.instance_variable_get(:@proceed)).to eq false
       expect(handler.instance_variable_get(:@ongoing_subscribe)).to eq false
+      expect(handler.instance_variable_get(:@ongoing_update)).to eq false
+      expect(handler.instance_variable_get(:@steps)).to eq(0)
     end
   end
 
