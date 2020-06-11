@@ -97,7 +97,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
   def subscribe_user
     user = User.new(@user_details)
-    if @config.add_user(user)
+    if @config.add_user?(user)
       send_message 'Your subscription was successful.'
       ImportantDayChecker.new(config: @config, bot: bot).check_today
       FeedMessenger.new(config: @config, bot: bot).send_feed
@@ -187,7 +187,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
   def update_user
     new_user = User.new(user_details)
-    if @config.update_user(new_user)
+    if @config.update_user?(new_user)
       send_message 'Your subscription has been successfully updated'
       ImportantDayChecker.new(config: @config, bot: bot).check_today
       FeedMessenger.new(config: @config, bot: bot).send_feed

@@ -24,32 +24,32 @@ describe AppConfig do
     end
   end
 
-  describe '#add_user' do
+  describe '#add_user?' do
     let(:user_details) { { chat_id: 'id' } }
     let(:user) { User.new(user_details) }
     it 'When user does not exist' do
-      expect(config.add_user(user)). to eq(true)
+      expect(config.add_user?(user)). to eq(true)
       expect(config.users). to eq([user])
     end
 
     it 'When user already exists' do
       config.instance_variable_set(:@users, [user])
-      expect(config.add_user(user)). to eq(false)
+      expect(config.add_user?(user)). to eq(false)
       expect(config.users). to eq([user])
     end
   end
 
-  describe '#update_user' do
+  describe '#update_user?' do
     let(:user_details) { { chat_id: 'another-id' } }
     let(:user) { User.new(user_details) }
     it 'When user already exists' do
       config.instance_variable_set(:@users, [user])
-      expect(config.update_user(user)). to eq(true)
+      expect(config.update_user?(user)). to eq(true)
       expect(config.users). to eq([user])
     end
 
     it 'When user doesn\'t exist' do
-      expect(config.update_user(user)). to eq(false)
+      expect(config.update_user?(user)). to eq(false)
       expect(config.users). to eq([])
     end
   end

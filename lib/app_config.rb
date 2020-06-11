@@ -9,7 +9,7 @@ class AppConfig
     @group_id = retrieve_group_id
   end
 
-  def add_user(user)
+  def add_user?(user)
     @users.each do |existing_user|
       return false if existing_user.chat_id == user.chat_id
     end
@@ -17,7 +17,7 @@ class AppConfig
     true
   end
 
-  def update_user(user)
+  def update_user?(user)
     @users.each do |existing_user|
       next unless existing_user.chat_id == user.chat_id
 
