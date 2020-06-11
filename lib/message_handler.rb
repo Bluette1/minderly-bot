@@ -94,6 +94,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       when 'n'
         @steps += 1
         handle
+      else
+        handle
       end
     elsif @steps == 2
       @steps += 1
@@ -110,6 +112,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       when 'n'
         @steps += 1
         handle
+      else
+        handle
       end
     elsif @steps == 4
       @steps += 1
@@ -124,8 +128,9 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       when 'n'
         @steps += 1
         handle
+      else
+        handle
       end
-
     else
       @steps = 0
       @proceed = false
