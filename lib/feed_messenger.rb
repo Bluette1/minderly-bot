@@ -48,16 +48,18 @@ class FeedMessenger
   end
 
   def choose_news_item(choice, news)
+    news_item = {}
     index = 0
     news.each do |title, link|
       if choice == index
         news_item = {}
         news_item[:title] = title
         news_item[:link] = link
-        return news_item
+        break
       end
       index += 1
     end
+    news_item
   end
 
   def send_rss(news_item, chat_id)

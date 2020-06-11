@@ -95,11 +95,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         handle
       else
+        @steps = 0
         handle
       end
     elsif @steps == 2
       @steps += 1
-      send_message 'Please  enter y[es] or n[o] if would like to update or add a birthday'
+      send_message 'Please  enter y[es] or n[o] if you would like to update or add a birthday'
 
     elsif @steps == 3
 
@@ -113,6 +114,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         handle
       else
+        @steps = 2
         handle
       end
     elsif @steps == 4
@@ -129,6 +131,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         handle
       else
+        @steps = 4
         handle
       end
     else
