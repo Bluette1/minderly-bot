@@ -22,7 +22,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   end
 
   def handle # rubocop:todo Metrics/CyclomaticComplexity
-    p 'I am here'
     command = retrieve_command
     case command
     when '/start'
@@ -64,7 +63,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     greetings = %w[
       bonjour hola hallo sveiki namaste shalom salaam szia halo ciao
     ]
-    send_message "#{greetings.sample.capitalize}, #{message.from.first_name}"
+    send_message "#{greetings.sample.capitalize}, #{message.from.first_name}!\n Enter /help for options."
   end
 
   def send_message(text)
@@ -177,12 +176,14 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
     # rubocop:todo Style/CommentedKeyword
   end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
+
   # rubocop:enable Style/CommentedKeyword
 
   def handle_update
-    @proceed = false
-    @previous_command = ''
-    update_user
+    send_message 'Please enter either of the commands:' \
+     " '/add_my_birthday', '/add_birthday', or '/add_anniversary'"\
+      " to update your birthday, and add birthdays and anniversaries to be"\
+      " reminded of respectively."
   end
 
   def update_user
@@ -215,12 +216,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     handle
   end
 
-  def prompt_update
-    @proceed = true
-    @previous_command = '/update'
-    handle
-  end
-
   def chose_action(command)
     case command
     when '/add_birthday'
@@ -247,7 +242,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     if @ongoing_subscribe
       prompt_subscribe
     else
-      prompt_update
+      update_user
     end
   end
 end
