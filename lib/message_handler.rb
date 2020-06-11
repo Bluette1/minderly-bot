@@ -21,9 +21,32 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @commands = @config.commands
   end
 
-  # rubocop:todo Metrics/PerceivedComplexity
-  # rubocop:todo Metrics/MethodLength
   def handle # rubocop:todo Metrics/CyclomaticComplexity
+    p 'I am here'
+    command = retrieve_command
+    case command
+    when '/start'
+      greet_user
+    when '/stop'
+      send_message "Bye, #{message.from.first_name}"
+    when '/help'
+      send_message "Please enter any of the following commands: #{@commands}"
+    when '/subscribe'
+      handle_subscribe command
+    when '/update'
+      handle_update
+    when '/add_birthday'
+      prompt_user command
+    when '/add_my_birthday'
+      prompt_user command
+    when '/add_anniversary'
+      prompt_user command
+    end
+  end
+
+  private
+
+  def retrieve_command
     command = if @proceed
                 @previous_command
               else
@@ -34,58 +57,42 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       "of the following commands: #{@commands}"
       send_message err_message
     end
-    case command
-    when '/start'
-      greetings = %w[
-        bonjour hola hallo sveiki namaste shalom salaam szia halo ciao
-      ]
-      send_message "#{greetings.sample.capitalize}, #{message.from.first_name}"
-    when '/stop'
-      send_message "Bye, #{message.from.first_name}"
-    when '/help'
-      send_message "Please enter any of the following commands: #{@commands}"
-    when '/subscribe'
-      @ongoing_subscribe = true
-      if @user_details[:chat_id].nil?
-        @user_details = { chat_id: message.chat.id }
-        @proceed = true
-        @previous_command = command
-      end
-      if @user_details[:birthday].nil?
-        @proceed = false
-        prompt_user '/add_my_birthday'
-      elsif user_details[:birthdays].nil?
-        send_message 'Please add at least one birthday to be reminded of'
-        prompt_user '/add_birthday'
-      elsif user_details[:anniversaries].nil?
-        send_message 'Please add at least one anniversary to be reminded of'
-        prompt_user '/add_anniversary'
-      else
-        @proceed = false
-        @previous_command = ''
-        @ongoing_subscribe = false
-        subscribe_user
-      end
-    when '/update'
-      @proceed = false
-      @previous_command = ''
-      update_user
-    when '/add_birthday'
-      prompt_user command
-    when '/add_my_birthday'
-      prompt_user command
-    when '/add_anniversary'
-      prompt_user command
-    end
+    command
   end
 
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/PerceivedComplexity
-
-  private
+  def greet_user
+    greetings = %w[
+      bonjour hola hallo sveiki namaste shalom salaam szia halo ciao
+    ]
+    send_message "#{greetings.sample.capitalize}, #{message.from.first_name}"
+  end
 
   def send_message(text)
     MessageSender.new(bot: bot, chat: message.chat, text: text).send
+  end
+
+  def handle_subscribe(command) # rubocop:todo Metrics/MethodLength
+    @ongoing_subscribe = true
+    if @user_details[:chat_id].nil?
+      @user_details = { chat_id: message.chat.id }
+      @proceed = true
+      @previous_command = command
+    end
+    if @user_details[:birthday].nil?
+      @proceed = false
+      prompt_user '/add_my_birthday'
+    elsif user_details[:birthdays].nil?
+      send_message 'Please add at least one birthday to be reminded of'
+      prompt_user '/add_birthday'
+    elsif user_details[:anniversaries].nil?
+      send_message 'Please add at least one anniversary to be reminded of'
+      prompt_user '/add_anniversary'
+    else
+      @proceed = false
+      @previous_command = ''
+      @ongoing_subscribe = false
+      subscribe_user
+    end
   end
 
   def subscribe_user
@@ -171,6 +178,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     # rubocop:todo Style/CommentedKeyword
   end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
   # rubocop:enable Style/CommentedKeyword
+
+  def handle_update
+    @proceed = false
+    @previous_command = ''
+    update_user
+  end
 
   def update_user
     new_user = User.new(user_details)
