@@ -65,10 +65,11 @@ class FeedMessenger
 
     link = news_item[:link]
 
-    text = title << "\n" << link
-
     MessageSender.new(
-      bot: bot, chat: nil, text: text
+      bot: bot, chat: nil, text: title
+    ).send_message chat_id
+    MessageSender.new(
+      bot: bot, chat: nil, text: link
     ).send_message chat_id
   end
 end
