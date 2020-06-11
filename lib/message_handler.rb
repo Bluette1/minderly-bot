@@ -23,8 +23,28 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @commands = @config.commands
   end
 
-  def handle # rubocop:todo Metrics/CyclomaticComplexity
+  def handle
     command = retrieve_command
+    handle_commands command
+  end
+
+  private
+
+  def retrieve_command
+    command = if @proceed
+                @previous_command
+              else
+                message.text
+              end
+    unless @commands.include?(command) || @proceed
+      err_message = "Unknown command #{command}. Please enter any " \
+      "of the following commands: #{@commands}"
+      send_message err_message
+    end
+    command
+  end
+
+  def handle_commands(command) # rubocop:todo Metrics/CyclomaticComplexity
     case command
     when '/start'
       greet_user
@@ -44,22 +64,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     when '/add_anniversary'
       prompt_user command
     end
-  end
-
-  private
-
-  def retrieve_command
-    command = if @proceed
-                @previous_command
-              else
-                message.text
-              end
-    unless @commands.include?(command) || @proceed
-      err_message = "Unknown command #{command}. Please enter any " \
-      "of the following commands: #{@commands}"
-      send_message err_message
-    end
-    command
   end
 
   def greet_user
