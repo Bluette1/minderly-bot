@@ -11,7 +11,7 @@ class AppConfig
 
   def add_user?(user)
     @users.each do |existing_user|
-      # This explicit return is required, if it is removed the false is not returned
+      # This explicit return is required, if it is removed the `false` is not returned
       return false if existing_user.chat_id == user.chat_id
     end
     @users << user
@@ -24,7 +24,7 @@ class AppConfig
 
       @users.delete(existing_user)
       @users << user
-      # This explicit return is required, if it is removed the false is not returned
+      # This explicit return is required, if it is removed the `true` is not returned
       return true
     end
     false
