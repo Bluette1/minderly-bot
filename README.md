@@ -32,15 +32,15 @@ Make sure the bot is running
 - Please enter any of the following commands: ["/start", "/help", "/stop", "/add_my_birthday", "/add_birthday", "/add_anniversary", "/subscribe", "/update"]
 
 ### Possible errors
-- Incorrect entry for date:
-"Nick: 769887/22/98"
-- Bot Response:
-"invalid date: Incorrect format for birthday date entry."
+- An incorrect entry for the date might a `Date.parse` error: 
+   - Example of an invalid date format
+       - "769887/22/98"
+   - Bot Response:
+       - "invalid date: Incorrect format for birthday date entry."
 - Make sure you enter the date in the proposed format.
 - Correct entries for date
-    - "12/06/1993" for "/add_my_birthday"
-    - "Jenny: 10/05/1998" for "/add_birthday"
-    - "Megan and John: 12/06/2011" for "/add_"
+    - Should be in the format "DD/MM/YYYY", for example, "12/06/1993" 
+
 
 ## Authors
 
