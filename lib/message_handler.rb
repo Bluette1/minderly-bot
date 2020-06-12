@@ -339,41 +339,25 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   # rubocop:todo Metrics/PerceivedComplexity
   # rubocop:todo Metrics/MethodLength
   # rubocop:todo Metrics/ParameterLists
-  def prompt_user(command, name = false, date = false, _done = false, previous_command = '', proceed = false)
+  def prompt_user(command, _name = false, _date = false, _done = false, previous_command = '', proceed = false)
     # rubocop:enable Metrics/ParameterLists
 
     if @done
-      p 'I am here'
       unless message.text.nil?
         # end
         @done = false
-        # @name = ''
-        # @name_set = false
         @proceed = proceed
         @previous_command = previous_command
         chose_action command
 
       end
     else
-      # p @done
       if !@name.empty? # rubocop:todo Style/IfInsideElse
         @done = true
         @proceed = true
         @previous_command = command
-        # @previous_command = command
-        p '222222222222222222222222222222222'
-        p name, 'NAME'
-        p date, 'DATE'
         message.text = nil
         send_message choose_message command, false, true
-        # count = 1
-        # while true
-        #   if message.text == nil
-        #     sleep(count)
-        #   end
-        #   count += 1
-        # end
-
       else
         if command == '/add_my_birtday'
           @done = true
@@ -384,9 +368,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
         @proceed = true
         @previous_command = command
-        p '11111111111111111'
-        p name, 'NAME'
-        p date, 'DATE'
         message.text = nil
         send_message choose_message command, true, false
       end
