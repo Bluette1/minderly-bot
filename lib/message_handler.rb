@@ -403,7 +403,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     case command
     when '/add_birthday'
       if name
-        'Please enter the name of the person whose birthday you would like to store'
+        'Please enter the name of the person whose birthday you would like to save'
       elsif date
         "Please enter the birthday date in the format 'DD/MM/YYYY'"
       end
@@ -412,7 +412,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       "Enter your birthday in the format 'DD/MM/YYYY'"
     when '/add_anniversary'
       if name
-        'Please enter the name of the couple whose anniversaries you would like to store, for example, John and Mary'
+        'Please enter the name of the couple whose anniversary you would like to save, for example, John and Mary'
 
       elsif date
         "Please enter the anniversary date in the format 'DD/MM/YYYY'"
