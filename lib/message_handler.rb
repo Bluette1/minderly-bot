@@ -14,6 +14,10 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @previous_command = ''
     @ongoing_subscribe = false
     @ongoing_update = false
+    @name = ''
+    @date = ''
+    @done = false
+    @name_set = false
   end
 
   def update_params(options)
@@ -41,6 +45,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       "of the following commands: #{@commands}"
       send_message err_message
     end
+
     command
   end
 
@@ -57,12 +62,15 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     when '/update'
       handle_update
     when '/add_birthday'
+      @name = message.text if @name_set and @name.empty?
       prompt_user command
 
     when '/add_my_birthday'
       prompt_user command
     when '/add_anniversary'
+      @name = message.text if @name_set and @name.empty?
       prompt_user command
+
     end
   end
 
@@ -79,6 +87,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
   # rubocop:todo Metrics/PerceivedComplexity
   # rubocop:todo Metrics/MethodLength
+  # rubocop:todo Metrics/AbcSize
   def handle_update # rubocop:todo Metrics/CyclomaticComplexity
     @ongoing_update = true
     if @steps.zero?
@@ -93,7 +102,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         message.text = nil
         @proceed = false
-        prompt_user '/add_my_birthday', '/update', true
+        prompt_user '/add_my_birthday', false, false, true, '/update', true
 
       when 'n'
         @steps += 1
@@ -113,7 +122,13 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         message.text = nil
         @proceed = false
-        prompt_user '/add_birthday', '/update', true
+        prompt_user '/add_birthday', true, false, false, '/update', true
+        unless message.text.nil?
+          @name = message.text
+          @proceed = false
+          @name = message.text
+          prompt_user '/add_birthday', false, true, true, '/update', true
+        end
       when 'n'
         @steps += 1
         handle
@@ -130,7 +145,15 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         message.text = nil
         @proceed = false
-        prompt_user '/add_anniversary', '/update', true
+        prompt_user '/add_anniversary', true, false, false, '/update', true
+        unless message.text.nil?
+          @name = message.text
+          @proceed = false
+          @name = message.text
+          # @done = true
+          prompt_user '/add_anniversary', false, true, true, '/update', true
+        end
+        # prompt_user '/add_anniversary', false, true, true, '/update', true
       when 'n'
         @steps += 1
         handle
@@ -142,13 +165,18 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @steps = 0
       @proceed = false
       @previous_command = ''
+      @name = ''
+      @name_set = false
       @ongoing_update = false
       update_user
     end
   end
+  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
 
+  # rubocop:todo Metrics/PerceivedComplexity
+  # rubocop:todo Metrics/CyclomaticComplexity
   def handle_subscribe(command) # rubocop:todo Metrics/MethodLength
     @ongoing_subscribe = true
     if @user_details[:chat_id].nil?
@@ -158,20 +186,43 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
     if @user_details[:birthday].nil?
       @proceed = false
-      prompt_user '/add_my_birthday'
+      prompt_user '/add_my_birthday', false, false, true
+
     elsif user_details[:birthdays].nil?
       send_message 'Please add at least one birthday to be reminded of'
-      prompt_user '/add_birthday'
+      @proceed = false
+      prompt_user '/add_birthday', true, false, false
+
+      unless message.text.nil?
+        @name = message.text
+        @proceed = false
+        prompt_user '/add_birthday', false, true, true
+      end
+
     elsif user_details[:anniversaries].nil?
       send_message 'Please add at least one anniversary to be reminded of'
-      prompt_user '/add_anniversary'
+
+      prompt_user '/add_anniversary', true, false, false
+
+      unless message.text.nil?
+        @done = true
+        @proceed = false
+        @name = message.text
+        @proceed = false
+        prompt_user '/add_anniversary', false, true, true
+      end
+
     else
       @proceed = false
       @previous_command = ''
+      @name = ''
+      @name_set = false
       @ongoing_subscribe = false
       subscribe_user
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def subscribe_user
     user = User.new(@user_details)
@@ -186,9 +237,9 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
-  def add_my_birthday
+  def add_my_birthday # rubocop:todo Metrics/MethodLength
     if message.text.nil?
-      prompt_user '/add_my_birthday'
+      prompt_user '/add_my_birthday', true, false, false
     else
 
       @user_details[:chat_id] = message.chat.id
@@ -202,22 +253,24 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
       if valid
         send_message 'Your birthday has been successfully added.'
+        @name = ''
+        @name_set = false
         message.text = nil
         next_action
       else
-        prompt_user '/add_my_birthday'
+        prompt_user '/add_my_birthday', true, false, false
       end
     end
   end
 
-  def add_birthday
+  def add_birthday # rubocop:todo Metrics/MethodLength
+    p @name, '@NAME:::::'
     if message.text.nil?
-      prompt_user '/add_birthday'
+      prompt_user '/add_birthday', true, false, false
     else
-      birthday_entry = message.text.split(':')
       valid = true
       begin
-        @birthdays[birthday_entry[0].strip.capitalize] = Date.parse(birthday_entry[1].strip)
+        @birthdays[@name.strip.capitalize.to_sym] = Date.parse(message.text.strip)
       rescue StandardError => e
         valid = false
         send_message "#{e}: Incorrect format for birthday date entry."
@@ -225,11 +278,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       if valid
         @user_details[:birthdays] = @birthdays
         send_message 'The birthday has been successfully added.'
-
+        @name = ''
+        @name_set = false
         message.text = nil
         next_action
       else
-        prompt_user '/add_birthday'
+        prompt_user '/add_birthday', true, false, false
       end
     end
     # rubocop:todo Style/CommentedKeyword
@@ -238,13 +292,14 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
   def add_anniversary # rubocop:todo Metrics/MethodLength
     if message.text.nil?
-      prompt_user '/add_anniversary'
+      p @name
+      prompt_user '/add_anniversary', true, false, false
     else
-      anniversary_entry = message.text.split(':')
+      # anniversary_entry = message.text.split(':')
       valid = true
       begin
-        anniversary_date = Date.parse(anniversary_entry[1].strip)
-        @anniversaries[anniversary_entry[0].strip.capitalize] = anniversary_date
+        anniversary_date = Date.parse(message.text.strip)
+        @anniversaries[@name.strip.capitalize] = anniversary_date
       rescue StandardError => e
         valid = false
         send_message "#{e}: Incorrect format for anniversary date entry."
@@ -252,10 +307,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       if valid
         @user_details[:anniversaries] = @anniversaries
         send_message 'The anniversary has been successfully added.'
+        @name_set = false
+        @name = ''
         message.text = nil
         next_action
       else
-        prompt_user '/add_anniversary'
+        prompt_user '/add_anniversary', true, false, false
       end
     end
     # rubocop:todo Style/CommentedKeyword
@@ -279,17 +336,64 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
-  def prompt_user(command, previous_command = '', proceed = false)
-    if @proceed
-      @proceed = proceed
-      @previous_command = previous_command
-      chose_action command
+  # rubocop:todo Metrics/PerceivedComplexity
+  # rubocop:todo Metrics/MethodLength
+  # rubocop:todo Metrics/ParameterLists
+  def prompt_user(command, name = false, date = false, _done = false, previous_command = '', proceed = false)
+    # rubocop:enable Metrics/ParameterLists
+
+    if @done
+      p 'I am here'
+      unless message.text.nil?
+        # end
+        @done = false
+        # @name = ''
+        # @name_set = false
+        @proceed = proceed
+        @previous_command = previous_command
+        chose_action command
+
+      end
     else
-      @proceed = true
-      @previous_command = command
-      send_message choose_message(command)
+      # p @done
+      if !@name.empty? # rubocop:todo Style/IfInsideElse
+        @done = true
+        @proceed = true
+        @previous_command = command
+        # @previous_command = command
+        p '222222222222222222222222222222222'
+        p name, 'NAME'
+        p date, 'DATE'
+        message.text = nil
+        send_message choose_message command, false, true
+        # count = 1
+        # while true
+        #   if message.text == nil
+        #     sleep(count)
+        #   end
+        #   count += 1
+        # end
+
+      else
+        if command == '/add_my_birtday'
+          @done = true
+        else
+          @name_set = true
+          @done = false
+        end
+
+        @proceed = true
+        @previous_command = command
+        p '11111111111111111'
+        p name, 'NAME'
+        p date, 'DATE'
+        message.text = nil
+        send_message choose_message command, true, false
+      end
     end
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def prompt_subscribe
     @proceed = true
@@ -314,16 +418,28 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
-  def choose_message(command)
+  # rubocop:todo Metrics/PerceivedComplexity
+  def choose_message(command, name, date) # rubocop:todo Metrics/CyclomaticComplexity
     case command
     when '/add_birthday'
-      "Please enter a birthday in the format: 'name: DD/MM/YYYY'."
+      if name
+        'Please enter the name of the person whose birthday you would like to store'
+      elsif date
+        "Please enter the person's birthday"
+      end
     when '/add_my_birthday'
+      @done = true
       "Enter your birthday in the format 'DD/MM/YYYY'"
     when '/add_anniversary'
-      "Please enter an anniversary in the format: 'couple name: DD/MM/YYYY'."
+      if name
+        'Please enter the name of the couple whose anniversaries you would like to store, for example, John and Mary'
+
+      elsif date
+        "Please enter the couple's anniversary"
+      end
     end
   end
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def next_action
     if @ongoing_subscribe
