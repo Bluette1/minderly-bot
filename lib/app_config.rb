@@ -11,8 +11,8 @@ class AppConfig
 
   def add_user?(user)
     res = true
-    @users.each do |_existing_user|
-      if _existing_user.chat_id == user.chat_id
+    @users.each do |existing_user|
+      if existing_user.chat_id == user.chat_id
         res = false
         break
       end
