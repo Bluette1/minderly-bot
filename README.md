@@ -32,7 +32,7 @@ Make sure the bot is running
 - Please enter any of the following commands: ["/start", "/help", "/stop", "/add_my_birthday", "/add_birthday", "/add_anniversary", "/subscribe", "/update"]
 
 ### Possible errors
-- An incorrect entry for the date might a `Date.parse` error: 
+- An incorrect entry for the date might throw a `Date.parse` error: 
    - Example of an invalid date format
        - "769887/22/98"
    - Bot Response:
