@@ -15,7 +15,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @ongoing_subscribe = false
     @ongoing_update = false
     @name = ''
-    @date = ''
     @done = false
     @name_set = false
   end
