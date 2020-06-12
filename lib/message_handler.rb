@@ -405,7 +405,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       if name
         'Please enter the name of the person whose birthday you would like to store'
       elsif date
-        "Please enter the person's birthday"
+        "Please enter the birthday date in the format 'DD/MM/YYYY'"
       end
     when '/add_my_birthday'
       @done = true
@@ -415,7 +415,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         'Please enter the name of the couple whose anniversaries you would like to store, for example, John and Mary'
 
       elsif date
-        "Please enter the couple's anniversary"
+        "Please enter the anniversary date in the format 'DD/MM/YYYY'"
       end
     end
   end
