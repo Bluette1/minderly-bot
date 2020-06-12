@@ -149,10 +149,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
           @name = message.text
           @proceed = false
           @name = message.text
-          # @done = true
           prompt_user '/add_anniversary', false, true, true, '/update', true
         end
-        # prompt_user '/add_anniversary', false, true, true, '/update', true
       when 'n'
         @steps += 1
         handle
@@ -294,7 +292,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       p @name
       prompt_user '/add_anniversary', true, false, false
     else
-      # anniversary_entry = message.text.split(':')
       valid = true
       begin
         anniversary_date = Date.parse(message.text.strip)
@@ -413,7 +410,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     when '/add_anniversary'
       if name
         'Please enter the name of the couple whose anniversary you would like to save, for example, John and Mary'
-
       elsif date
         "Please enter the anniversary date in the format 'DD/MM/YYYY'"
       end
