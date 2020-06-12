@@ -1,0 +1,77 @@
+require 'rss'
+require 'open-uri'
+require_relative './message_sender'
+
+class FeedMessenger
+  attr_reader :config, :bot
+
+  def initialize(options)
+    @config = options[:config]
+    @bot = options [:bot]
+    @url = 'http://rss.cnn.com/rss/edition.rss'
+  end
+
+  def send_feed
+    Thread.new do
+      loop do
+        check_news
+        interval = 3600
+        sleep(interval)
+      end
+    end
+  end
+
+  private
+
+  def check_news
+    news = {}
+    URI.parse(@url).open do |rss|
+      feed = RSS::Parser.parse(rss)
+      puts "Title: #{feed.channel.title}"
+      feed.items.each do |item|
+        title = item.title
+        news[title.to_sym] = item.link
+      end
+      send_to_users news
+    end
+  end
+
+  def send_to_users(news)
+    users = config.users
+    choice = rand(5)
+    news_item = choose_news_item choice, news
+    users.each do |user|
+      send_rss news_item, user.chat_id
+      send_rss news_item, config.group_id
+      send_rss news_item, config.channel_id
+    end
+  end
+
+  def choose_news_item(choice, news)
+    news_item = {}
+    index = 0
+    news.each do |title, link|
+      if choice == index
+        news_item = {}
+        news_item[:title] = title
+        news_item[:link] = link
+        break
+      end
+      index += 1
+    end
+    news_item
+  end
+
+  def send_rss(news_item, chat_id)
+    title = news_item[:title]
+
+    link = news_item[:link]
+
+    MessageSender.new(
+      bot: bot, chat: nil, text: title
+    ).send_message chat_id
+    MessageSender.new(
+      bot: bot, chat: nil, text: link
+    ).send_message chat_id
+  end
+end
