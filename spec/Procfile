@@ -1,1 +1,0 @@
-web: ruby ./bin/bot_runner.rb 
