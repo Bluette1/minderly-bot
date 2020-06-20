@@ -11,6 +11,7 @@ GEM
       descendants_tracker (~> 0.0.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    diff-lcs (1.3)
     equalizer (0.0.11)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
@@ -27,6 +28,19 @@ GEM
       method_source (~> 1.0)
     rainbow (3.0.0)
     rexml (3.2.4)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
+    rspec-core (3.9.2)
+      rspec-support (~> 3.9.3)
+    rspec-expectations (3.9.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-mocks (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-support (3.9.3)
     rss (0.2.9)
       rexml
     rubocop (0.81.0)
@@ -56,6 +70,7 @@ PLATFORMS
 
 DEPENDENCIES
   pry
+  rspec
   rss
   rubocop (~> 0.81.0)
   telegram-bot-ruby

@@ -9,6 +9,8 @@ describe ImportantDayChecker do
     let(:date_checker) { ImportantDayChecker.new(options) }
 
     it 'returns the correct instance variables' do
+      allow(Thread).to receive(:new) do
+      end
       expect(date_checker.bot).to eq(bot)
       expect(date_checker.config).to eq(config)
     end
