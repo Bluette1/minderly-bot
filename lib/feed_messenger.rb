@@ -55,11 +55,10 @@ class FeedMessenger
 
   def pre_post_append(channel)
     channel = if channel.match?(/...History.../i)
-                "===========Channel: #{channel}==========="
+                channel.center(58, '=')   
               else
-                "----------------------------Channel: #{channel}---------------------------"
+                channel.center(81, '-') 
               end
-    # p channel
     channel
   end
 
