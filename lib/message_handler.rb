@@ -174,8 +174,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   # rubocop:enable Metrics/PerceivedComplexity
 
   # rubocop:todo Metrics/PerceivedComplexity
-  # rubocop:todo Metrics/CyclomaticComplexity
-  def handle_subscribe(command) # rubocop:todo Metrics/MethodLength
+  # rubocop:todo Metrics/MethodLength
+  def handle_subscribe(command) # rubocop:todo Metrics/CyclomaticComplexity
     @ongoing_subscribe = true
     if @user_details[:chat_id].nil?
       @user_details = { chat_id: message.chat.id }
@@ -219,7 +219,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       subscribe_user
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
 
   def subscribe_user
@@ -287,17 +287,22 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         prompt_user '/add_birthday', true, false, false
       end
     end
-    # rubocop:todo Style/CommentedKeyword
-  end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
-  # rubocop:enable Style/CommentedKeyword
+  end
 
+  # rubocop:todo Metrics/PerceivedComplexity
   def add_anniversary # rubocop:todo Metrics/MethodLength
     if message.text.nil?
       prompt_user '/add_anniversary', true, false, false
     else
       valid = true
       names = @name.strip.split(' ')
-      names.map! { |name| name.capitalize if name.downcase != 'and' }
+      names.map! do |name|
+        if name.downcase == 'and'
+          name
+        else
+          name.capitalize
+        end
+      end
       begin
         anniversary_date = Date.parse(message.text.strip)
         @anniversaries[names.join(' ')] = anniversary_date
@@ -316,10 +321,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         prompt_user '/add_anniversary', true, false, false
       end
     end
-    # rubocop:todo Style/CommentedKeyword
-  end # rubocop:enable Metrics/MethodLength  # rubocop:enable Style/CommentedKeyword
-
-  # rubocop:enable Style/CommentedKeyword
+  end
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def update_user
     new_user = User.new(user_details)
