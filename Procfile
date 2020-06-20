@@ -1,1 +1,1 @@
-bot: ruby ./bin/bot_runner.rb 
+worker: ruby bot_runner.rb 
