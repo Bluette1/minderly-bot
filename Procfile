@@ -1,1 +1,1 @@
-ruby: ./bin/bot_runner.rb 
+web: ruby ./bin/bot_runner.rb 
