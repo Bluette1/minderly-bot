@@ -19,7 +19,13 @@ This is a capstone project at the end of the main Ruby curriculum at [Microverse
 [Live Demo]()
 
 ### Run instructions 
--  You can clone the GitHub repo and type `ruby ./bin/bot_runner.rb` in the terminal to run the bot locally. Alternatively, you can create an executable script to run it.
+-  You can clone the GitHub repo and type the following commands in the terminal to run the bot locally 
+    ```
+    bundle install
+    ruby ./bin/bot_runner.rb
+    ```
+
+ Alternatively, you can create an executable script to run it.
 - To add the bot to Telegram, one has to create a Telegram bot account for it using BotFather, and connect to it using the API obtained token.
 
 ### How to use the bot

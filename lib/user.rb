@@ -1,7 +1,10 @@
 class User
-  attr_reader :birthday, :important_days, :chat_id
+
+  attr_reader :birthday, :important_days, :chat_id, :first_name
 
   def initialize(user_details)
+    @first_name = user_details[:first_name]
+    @last_name = user_details[:last_name]
     @birthday = user_details[:birthday]
     @important_days = {}
     @important_days[:birthdays] = user_details[:birthdays]
