@@ -4,14 +4,16 @@ describe User do
   describe '#initialise' do
     let(:birthdays) { { Hannah: '12/03/2000' } }
     let(:anniversaries) { { Smiths: '12/03/2009' } }
-    let(:user_details) { {
-      first_name: 'Mary',
-      last_name: 'Sewyr',
-       chat_id: 'id',
+    let(:user_details) do
+      {
+        first_name: 'Mary',
+        last_name: 'Sewyr',
+        chat_id: 'id',
         birthday: '23/12/1999',
-         birthdays: birthdays,
-          anniversaries: anniversaries 
-       } }
+        birthdays: birthdays,
+        anniversaries: anniversaries
+      }
+    end
     let(:user) { User.new(user_details) }
 
     it 'returns the correct instance variables' do

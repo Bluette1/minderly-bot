@@ -8,12 +8,10 @@ describe MessageHandler do
   let(:message) { { text: '/command' } }
   let(:config) { AppConfig.new }
   let(:handler) { MessageHandler.new }
-  let(:day_checker) {ImportantDayChecker.new(config: config, bot: bot)}
-  let(:feeder) {FeedMessenger.new(config: config, bot: bot)}
-  
+  let(:day_checker) { ImportantDayChecker.new(config: config, bot: bot) }
+  let(:feeder) { FeedMessenger.new(config: config, bot: bot) }
 
   describe '#initialise' do
-
     it 'returns the correct instance variables' do
       expect(handler.instance_variable_get(:@birthdays)).to eq({})
       expect(handler.instance_variable_get(:@anniversaries)).to eq({})
@@ -29,14 +27,15 @@ describe MessageHandler do
   end
 
   describe '#update_params' do
-
-    let(:options) {{
-      bot: bot,
-      message: message,
-      config: config,
-      day_checker: day_checker,
-      feeder: feeder
-    }}
+    let(:options) do
+      {
+        bot: bot,
+        message: message,
+        config: config,
+        day_checker: day_checker,
+        feeder: feeder
+      }
+    end
 
     it 'returns the correct instance variables' do
       handler.update_params(options)
