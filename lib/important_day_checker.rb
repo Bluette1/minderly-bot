@@ -9,30 +9,30 @@ class ImportantDayChecker
     check_today
   end
 
-  def check_today(user=nil)
-      unless user.nil?
-        check_important_days user
-      else
-        Thread.new do
-          loop do
-            check_important_days
-            interval = 24 * 3600
-            sleep(interval)
-          end
+  def check_today(user = nil)
+    if user.nil?
+      Thread.new do
+        loop do
+          check_important_days
+          interval = 24 * 3600
+          sleep(interval)
         end
       end
+    else
+      check_important_days user
+    end
   end
 
   private
 
-  def check_important_days(user=nil)
+  def check_important_days(user = nil)
     if user.nil?
       users = config.users
-      users.each do |user|
+      users.each do |user| # rubocop:todo Lint/ShadowingOuterLocalVariable
         check_important_days_for_user user
       end
     else
-      check_important_days_for_user user   
+      check_important_days_for_user user
     end
   end
 
@@ -60,6 +60,7 @@ class ImportantDayChecker
     today = Date.today
     important_days.each do |name, date|
       next unless (today.month == date.month) && (today.day == date.day)
+
       text = "***********Happy #{day} #{name}!***********"
       MessageSender.new(
         bot: bot, chat: nil, text: text

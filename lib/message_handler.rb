@@ -268,7 +268,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       prompt_user '/add_birthday', true, false, false
     else
       names = @name.strip.split(' ')
-      names.map! {|name| name.capitalize}
+      names.map!(&:capitalize)
       valid = true
       begin
         @birthdays[names.join(' ')] = Date.parse(message.text.strip)
@@ -297,7 +297,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     else
       valid = true
       names = @name.strip.split(' ')
-      names.map! {|name| name.capitalize if name.downcase != 'and'}
+      names.map! { |name| name.capitalize if name.downcase != 'and' }
       begin
         anniversary_date = Date.parse(message.text.strip)
         @anniversaries[names.join(' ')] = anniversary_date

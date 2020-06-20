@@ -9,32 +9,32 @@ class FeedMessenger
     @config = options[:config]
     @bot = options [:bot]
     @urls = [
-    'https://www.history.com/.rss/full/this-day-in-history',
-    'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-    'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml',
-    'https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml',
-    'https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml'
+      'https://www.history.com/.rss/full/this-day-in-history',
+      'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
+      'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml',
+      'https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml',
+      'https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml'
     ]
     send_feed
   end
 
-  def send_feed(user=nil)
-      unless user.nil?
-        check_news (user)
-      else
-        Thread.new do
-          loop do
-            check_news
-            interval = 3600
-            sleep(interval)
-          end
+  def send_feed(user = nil)
+    if user.nil?
+      Thread.new do
+        loop do
+          check_news
+          interval = 3600
+          sleep(interval)
         end
       end
+    else
+      check_news user
+    end
   end
 
   private
 
-  def check_news(user=nil)
+  def check_news(user = nil)
     @urls.each do |url|
       news = {}
       URI.parse(url).open do |rss|
@@ -44,39 +44,39 @@ class FeedMessenger
           title = item.title
           news[title.to_sym] = item.link
         end
-        unless user.nil?
-          send_to_users news, channel, user
-        else
+        if user.nil?
           send_to_users news, channel
-        end 
+        else
+          send_to_users news, channel, user
+        end
       end
     end
   end
 
-  def pre_post_append channel
-    if channel.match?(/...History.../i)
-      channel = "===========Channel: #{channel}==========="
-    else 
-      channel = "----------------------------Channel: #{channel}---------------------------"
-    end
+  def pre_post_append(channel)
+    channel = if channel.match?(/...History.../i)
+                "===========Channel: #{channel}==========="
+              else
+                "----------------------------Channel: #{channel}---------------------------"
+              end
     # p channel
     channel
   end
 
-  def send_to_users(news, channel, user=nil)
+  def send_to_users(news, channel, user = nil)
     users = config.users
     choice = rand(5)
     news_item = choose_news_item choice, news, channel
-    unless user.nil?
-      feed user, news_item
-    else
-      users.each do |user|
+    if user.nil?
+      users.each do |user| # rubocop:todo Lint/ShadowingOuterLocalVariable
         feed user, news_item
-      end 
+      end
+    else
+      feed user, news_item
     end
   end
 
-  def feed user, news_item
+  def feed(user, news_item)
     send_rss news_item, user.chat_id
     send_rss news_item, config.group_id
     send_rss news_item, config.channel_id

@@ -1,5 +1,4 @@
 class User
-
   attr_reader :birthday, :important_days, :chat_id, :first_name
 
   def initialize(user_details)

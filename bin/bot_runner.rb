@@ -12,16 +12,15 @@ token = config.token
 puts 'Starting telegram bot: MinderlyBot'
 
 Telegram::Bot::Client.run(token) do |bot|
-
   messagehandler = MessageHandler.new
   day_checker = ImportantDayChecker.new(config: config, bot: bot)
   feeder = FeedMessenger.new(config: config, bot: bot)
-  
+
   bot.listen do |message|
-    options = { 
-      bot: bot, 
+    options = {
+      bot: bot,
       message: message,
-      config: config, 
+      config: config,
       day_checker: day_checker,
       feeder: feeder
     }
