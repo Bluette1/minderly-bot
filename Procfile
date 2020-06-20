@@ -1,1 +1,1 @@
-web: bundle exec ruby ./bin/bot_runner.rb 
+bot: ruby ./bin/bot_runner.rb 
