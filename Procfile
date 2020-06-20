@@ -1,1 +1,1 @@
-worker: ruby bot_runner.rb 
+heroku run: ruby bot_runner.rb 
