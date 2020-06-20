@@ -1,1 +1,0 @@
-heroku run: ruby bot_runner.rb 
