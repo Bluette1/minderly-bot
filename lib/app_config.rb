@@ -64,4 +64,14 @@ class AppConfig
     channel_id = '-1001482906311'
     channel_id
   end
+
+  def default_important_days
+    today = Date.today
+    days = {
+      Christmas: [Date.parse("25/10/#{today.year}"), 'Wishing you a Merry Christmas!'],
+      Fathers_Day: [Date.parse("21/06/#{today.year}"), 'Happy Father\'s day!'],
+      Mothers_Day: [Date.parse("10/05/#{today.year}"), 'Happy Mother\'s day!']
+    }
+    days
+  end
 end

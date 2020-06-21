@@ -4,8 +4,14 @@ require_relative '../lib/message_handler'
 require_relative '../lib/app_config'
 require_relative '../lib/important_day_checker'
 require_relative '../lib/feed_messenger'
+require_relative '../lib/helpers/default_user'
 
 config = AppConfig.new
+if config.add_user?(DefaultUser.retrieve)
+  puts 'Default user successfully added'
+else
+  puts 'Failed to add default user'
+end
 
 token = config.token
 

@@ -17,6 +17,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     @name = ''
     @done = false
     @name_set = false
+    @sex = ''
   end
 
   def update_params(options)
@@ -65,7 +66,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     when '/add_birthday'
       @name = message.text if @name_set and @name.empty?
       prompt_user command
-
     when '/add_my_birthday'
       prompt_user command
     when '/add_anniversary'
@@ -104,7 +104,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         message.text = nil
         @proceed = false
         prompt_user '/add_my_birthday', false, false, true, '/update', true
-
+        add_sex
       when 'n'
         @steps += 1
         handle
@@ -165,6 +165,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @previous_command = ''
       @name = ''
       @name_set = false
+      @sex = ''
       @ongoing_update = false
       update_user
     end
@@ -182,9 +183,10 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @proceed = true
       @previous_command = command
     end
-    if @user_details[:birthday].nil?
+    if @user_details[:birthday].nil? || @sex.empty?
       @proceed = false
       prompt_user '/add_my_birthday', false, false, true
+      add_sex
 
     elsif user_details[:birthdays].nil?
       send_message 'Please add at least one birthday to be reminded of'
@@ -215,6 +217,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @previous_command = ''
       @name = ''
       @name_set = false
+      @sex = ''
       @ongoing_subscribe = false
       subscribe_user
     end
@@ -241,6 +244,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     else
 
       @user_details[:chat_id] = message.chat.id
+      @user_details[:sex] = @sex
       valid = true
       @user_details[:first_name] = message.from.first_name
       @user_details[:last_name] = message.from.last_name
@@ -428,6 +432,20 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       prompt_update
     else
       update_user
+    end
+  end
+
+  def add_sex
+    while @sex.empty?
+      send_message 'Please enter [m]ale or [f]emale for male or female respectively'
+      case message.text[0].downcase
+      when 'm'
+        @sex = 'M'
+      when 'f'
+        @sex = 'F'
+      else
+        send_message 'Please enter [m]ale or [f]emale for male or female respectively'
+      end
     end
   end
 end

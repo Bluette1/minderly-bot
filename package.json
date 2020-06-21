@@ -1,0 +1,28 @@
+{
+  "name": "minderly-bot",
+  "version": "1.0.0",
+  "description": "This is a capstone project at the end of the main Ruby curriculum at [Microverse](https:www.microverse.org/) - @microverseinc.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "rspec --format doc",
+    "start": "ruby ./bin/bot_runner.rb",
+    "lint" : "rubocop --safe-auto-correct --disable-uncorrectable",
+    "precommit": "npm test && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bluette1/minderly-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bluette1/minderly-bot/issues"
+  },
+  "homepage": "https://github.com/Bluette1/minderly-bot#readme",
+  "devDependencies": {
+    "husky": "^4.2.5"
+  }
+}
