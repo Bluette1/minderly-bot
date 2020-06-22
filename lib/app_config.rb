@@ -1,4 +1,4 @@
-class AppConfig
+  class AppConfig
   attr_reader :users, :token, :commands, :channel_id, :group_id
 
   def initialize
@@ -68,9 +68,9 @@ class AppConfig
   def default_important_days
     today = Date.today
     days = {
-      Christmas: [Date.parse("25/10/#{today.year}"), 'Wishing you a Merry Christmas!'],
-      Fathers_Day: [Date.parse("21/06/#{today.year}"), 'Happy Father\'s day!'],
-      Mothers_Day: [Date.parse("10/05/#{today.year}"), 'Happy Mother\'s day!']
+      Christmas: [Date.parse("25/10/#{today.year}"), 'Wishing you a Merry Christmas!', 'B'],
+      Fathers_Day: [Date.parse("21/06/#{today.year}"), 'Happy Father\'s day', 'F'],
+      Mothers_Day: [Date.parse("10/05/#{today.year}"), 'Happy Mother\'s day', 'M']
     }
     days
   end

@@ -248,6 +248,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       valid = true
       @user_details[:first_name] = message.from.first_name
       @user_details[:last_name] = message.from.last_name
+      @user_details[:username] = message.from.username
       begin
         @user_details[:birthday] = Date.parse(message.text.strip)
       rescue StandardError => e

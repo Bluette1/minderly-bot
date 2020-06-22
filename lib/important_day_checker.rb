@@ -36,8 +36,17 @@ class ImportantDayChecker
     end
   end
 
-  def check_default_important_days
-    
+  def check_default_important_days (user=nil)
+    days = config.default_important_days
+    days.each do |day|
+      next unless (today.month == day[0].month) && (today.day == day[0].day)
+      if user.sex == day[2]
+        send_message user.chat_id, day[1] << ", #{user.first_name}!"
+      end
+      text = day[1] << '!'
+      send_message config.group_id, text
+      send_message config.channel_id, text
+    end
   end
 
   def check_important_days_for_user(user)
@@ -50,31 +59,31 @@ class ImportantDayChecker
 
   def check_user_birthday(user)
     chat_id = user.chat_id
-    today = Date.today
     if user.birthday.month == today.month and user.birthday.day == today.day # rubocop:todo Style/GuardClause
       text = "****Happy birthday #{user.first_name}!*****"
-      MessageSender.new(
-        bot: bot, chat: nil, text: text
-      ).send_message chat_id
+      send_message chat_id, text
     end
   end
 
   def check_days(important_days, day, user)
     chat_id = user.chat_id
-    today = Date.today
     important_days.each do |name, date|
       next unless (today.month == date.month) && (today.day == date.day)
 
       text = "***********Happy #{day} #{name}!***********"
-      MessageSender.new(
-        bot: bot, chat: nil, text: text
-      ).send_message chat_id
-      MessageSender.new(
-        bot: bot, chat: nil, text: text
-      ).send_message config.group_id
-      MessageSender.new(
-        bot: bot, chat: nil, text: text
-      ).send_message config.channel_id
+      send_message chat_id, text
+      send_message config.group_id, text
+      send_message config.channel_id, text
     end
+  end
+
+  def today
+    Date.today
+  end
+
+  def send_message chat_id, text
+    MessageSender.new(
+      bot: bot, chat: nil, text: text
+    ).send_message chat_id 
   end
 end

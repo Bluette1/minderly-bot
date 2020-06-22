@@ -4,6 +4,7 @@ class User
   def initialize(user_details)
     @first_name = user_details[:first_name]
     @last_name = user_details[:last_name]
+    @username = user_details[:username]
     @sex = user_details[:sex]
     @birthday = user_details[:birthday]
     @important_days = {}
