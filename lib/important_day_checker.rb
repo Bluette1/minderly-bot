@@ -36,6 +36,10 @@ class ImportantDayChecker
     end
   end
 
+  def check_default_important_days
+    
+  end
+
   def check_important_days_for_user(user)
     check_user_birthday user
     birthdays = user.important_days[:birthdays]

@@ -47,7 +47,17 @@ Make sure the bot is running
 - Correct entries for date
     - Should be in the format "DD/MM/YYYY", for example, "12/06/1993" 
 
+### Run Tests
+`rspec --format doc`
 
+### Alternatively you can use npm commands after [installing node and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) on your machine
+- `npm start` to run the bot
+- `npm test` to run the tests
+
+
+
+## Deployment
+- You can deploy on [Heroku](https://devcenter.heroku.com/categories/ruby-support) and run the app in the console via `Heroku run` or recreate the bot application using the rails framework in order to deploy the bot with a Procfile.
 ## Authors
 
 👤 **Marylene Sawyer**
