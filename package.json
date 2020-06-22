@@ -10,7 +10,7 @@
     "test": "rspec --format doc",
     "start": "ruby ./bin/bot_runner.rb",
     "lint" : "rubocop --safe-auto-correct --disable-uncorrectable",
-    "pre-commit": "npm test && npm run lint"
+    "pre-commit": "npm test && npm run lint && git add . "
   },
   "repository": {
     "type": "git",

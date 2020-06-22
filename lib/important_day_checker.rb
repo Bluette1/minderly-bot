@@ -36,13 +36,12 @@ class ImportantDayChecker
     end
   end
 
-  def check_default_important_days (user=nil)
+  def check_default_important_days(user = nil)
     days = config.default_important_days
     days.each do |day|
       next unless (today.month == day[0].month) && (today.day == day[0].day)
-      if user.sex == day[2]
-        send_message user.chat_id, day[1] << ", #{user.first_name}!"
-      end
+
+      send_message user.chat_id, day[1] << ", #{user.first_name}!" if user.sex == day[2]
       text = day[1] << '!'
       send_message config.group_id, text
       send_message config.channel_id, text
@@ -81,9 +80,9 @@ class ImportantDayChecker
     Date.today
   end
 
-  def send_message chat_id, text
+  def send_message(chat_id, text)
     MessageSender.new(
       bot: bot, chat: nil, text: text
-    ).send_message chat_id 
+    ).send_message chat_id
   end
 end

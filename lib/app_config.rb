@@ -1,4 +1,4 @@
-  class AppConfig
+class AppConfig
   attr_reader :users, :token, :commands, :channel_id, :group_id
 
   def initialize
