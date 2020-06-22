@@ -30,19 +30,26 @@ class ImportantDayChecker
       users = config.users
       users.each do |user| # rubocop:todo Lint/ShadowingOuterLocalVariable
         check_important_days_for_user user
+
+        check_default_important_days user
       end
+
     else
+      check_default_important_days user
+
       check_important_days_for_user user
+
     end
   end
 
   def check_default_important_days(user = nil)
     days = config.default_important_days
-    days.each do |day|
-      next unless (today.month == day[0].month) && (today.day == day[0].day)
+    days.each do |_day, details|
+      next unless (today.month == details[0].month) && (today.day == details[0].day)
 
-      send_message user.chat_id, day[1] << ", #{user.first_name}!" if user.sex == day[2]
-      text = day[1] << '!'
+      send_message user.chat_id, details[1] << ", #{user.first_name}!" unless user.nil? || user.sex != details[2]
+
+      text = details[1] << '!'
       send_message config.group_id, text
       send_message config.channel_id, text
     end
