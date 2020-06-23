@@ -31,7 +31,7 @@ This is a capstone project at the end of the main Ruby curriculum at [Microverse
 ### How to use the bot
 Make sure the bot is running
 - In order to use MinderlyBot one has to have a Telegram account.
-- Ordinary users are able to interact with the bot via their Telegram accounts
+- Ordinary users are able to interact with the bot via their Telegram accounts.
 - The bot is also able to post messages to channels and groups if it is added as an administrator.
 
 ### Available commands
@@ -54,10 +54,13 @@ Make sure the bot is running
 - `npm start` to run the bot
 - `npm test` to run the tests
 
-
-
 ## Deployment
 - You can deploy on [Heroku](https://devcenter.heroku.com/categories/ruby-support) and run the app in the console via `Heroku run` or recreate the bot application using the rails framework in order to deploy the bot with a Procfile.
+
+## Potential Future Improvements / Ambitions
+- Recreate the bot using a framework such as rails or sinatra.
+- Add integration to [Google Calendar API](https://console.developers.google.com) in order to access national public holidays for the user.
+
 ## Authors
 
 👤 **Marylene Sawyer**

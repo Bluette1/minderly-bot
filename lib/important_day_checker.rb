@@ -47,9 +47,10 @@ class ImportantDayChecker
     days.each do |_day, details|
       next unless (today.month == details[0].month) && (today.day == details[0].day)
 
-      send_message user.chat_id, details[1] << ", #{user.first_name}!" unless user.nil? || user.sex != details[2]
+      text = (details[1] << ', ' << user.first_name << '!').center(60, '*')
+      send_message user.chat_id, text unless user.nil? || user.sex != details[2]
 
-      text = details[1] << '!'
+      text = (details[1] << '!').center(80, '*')
       send_message config.group_id, text
       send_message config.channel_id, text
     end
@@ -66,7 +67,7 @@ class ImportantDayChecker
   def check_user_birthday(user)
     chat_id = user.chat_id
     if user.birthday.month == today.month and user.birthday.day == today.day # rubocop:todo Style/GuardClause
-      text = "****Happy birthday #{user.first_name}!*****"
+      text = "Happy birthday, #{user.first_name}!".center(60, '*')
       send_message chat_id, text
     end
   end
@@ -76,7 +77,7 @@ class ImportantDayChecker
     important_days.each do |name, date|
       next unless (today.month == date.month) && (today.day == date.day)
 
-      text = "***********Happy #{day} #{name}!***********"
+      text = "Happy #{day}, #{name}!".center(60, '*')
       send_message chat_id, text
       send_message config.group_id, text
       send_message config.channel_id, text
