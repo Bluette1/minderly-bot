@@ -8,9 +8,9 @@ class DefaultUser
 
                last_name: 'Sawyer',
                sex: 'F',
-               birthday: Date.parse('13/03/1980'),
-               birthdays: { "Ben Sawyer": Date.parse('12/10/1994') },
-               anniversaries: { "Ben and Marylene Sawyer": Date.parse('06/05/2011') }
+               birthday: Date.parse('19/04/1980'),
+               birthdays: { "Ben Sawyer": Date.parse('06/03/1994') },
+               anniversaries: { "Ben and Marylene Sawyer": Date.parse('16/09/2011') }
              })
   end
 end
