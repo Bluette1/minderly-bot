@@ -69,9 +69,9 @@ class AppConfig
   def retrieve_default_important_days
     today = Date.today
     {
-      Christmas: [Date.parse("25/10/#{today.year}"), 'Wishing you a Merry Christmas!', 'B'],
-      Fathers_Day: [Date.parse("21/06/#{today.year}"), 'Happy Father\'s day', 'M'],
-      Mothers_Day: [Date.parse("10/05/#{today.year}"), 'Happy Mother\'s day', 'F']
+      Christmas: [Date.parse("23/06/#{today.year}"), 'Wishing you a Merry Christmas', 'B'],
+      Fathers_Day: [Date.parse("23/06/#{today.year}"), 'Happy Father\'s day', 'M'],
+      Mothers_Day: [Date.parse("23/06/#{today.year}"), 'Happy Mother\'s day', 'F']
     }
   end
 end

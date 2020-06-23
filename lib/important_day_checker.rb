@@ -47,12 +47,12 @@ class ImportantDayChecker
     days.each do |_day, details|
       next unless (today.month == details[0].month) && (today.day == details[0].day)
 
-      text = (details[1] << ', ' << user.first_name << '!').center(60, '*')
-      send_message user.chat_id, text unless user.nil? || user.sex != details[2]
+      text_user = (details[1] + ', ' + user.first_name + '!').center(55, '*')
+      send_message user.chat_id, text_user unless user.nil? || user.sex != details[2]
 
-      text = (details[1] << '!').center(80, '*')
-      send_message config.group_id, text
-      send_message config.channel_id, text
+      text_group = (details[1] + '!').center(55, '*')
+      send_message config.group_id, text_group
+      send_message config.channel_id, text_group
     end
   end
 
