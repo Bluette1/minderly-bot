@@ -104,7 +104,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         message.text = nil
         @proceed = false
         prompt_user '/add_my_birthday', false, false, true, '/update', true
-        add_sex
+
       when 'n'
         @steps += 1
         handle
@@ -113,10 +113,13 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         handle
       end
     elsif @steps == 2
+      add_sex
+      @steps += 1
+    elsif @steps == 3
       @steps += 1
       send_message 'Please  enter y[es] or n[o] if you would like to update or add a birthday'
 
-    elsif @steps == 3
+    elsif @steps == 4
 
       case message.text[0].downcase
       when 'y'
@@ -133,13 +136,13 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         handle
       else
-        @steps = 2
+        @steps = 3
         handle
       end
-    elsif @steps == 4
+    elsif @steps == 5
       @steps += 1
       send_message 'Please  enter y[es] or n[o] if would like to update or add an anniversary'
-    elsif @steps == 5
+    elsif @steps == 6
       case message.text[0].downcase
       when 'y'
         @steps += 1
@@ -156,7 +159,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
         @steps += 1
         handle
       else
-        @steps = 4
+        @steps = 5
         handle
       end
     else
@@ -183,11 +186,11 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @proceed = true
       @previous_command = command
     end
-    if @user_details[:birthday].nil? || @sex.empty?
+    if @user_details[:birthday].nil?
       @proceed = false
       prompt_user '/add_my_birthday', false, false, true
+    elsif @sex.empty?
       add_sex
-
     elsif user_details[:birthdays].nil?
       send_message 'Please add at least one birthday to be reminded of'
       @proceed = false
@@ -437,16 +440,22 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
   end
 
   def add_sex
-    while @sex.empty?
+    if message.text.nil?
       send_message 'Please enter [m]ale or [f]emale for male or female respectively'
-      case message.text[0].downcase
-      when 'm'
-        @sex = 'M'
-      when 'f'
-        @sex = 'F'
-      else
-        send_message 'Please enter [m]ale or [f]emale for male or female respectively'
+    else
+      while @sex.empty?
+
+        case message.text[0].downcase
+        when 'm'
+          @sex = 'M'
+        when 'f'
+          @sex = 'F'
+        else
+          send_message 'Please enter [m]ale or [f]emale for male or female respectively'
+        end
       end
+      message.text = nil
+      next_action
     end
   end
 end
