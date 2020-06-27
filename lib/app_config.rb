@@ -1,5 +1,5 @@
 class AppConfig
-  attr_reader :users, :token, :commands, :channel_id, :group_id
+  attr_reader :users, :token, :commands, :channel_id, :group_id, :default_important_days
 
   def initialize
     @users = []
@@ -7,6 +7,7 @@ class AppConfig
     @commands = retrieve_commands
     @channel_id = retrieve_channel_id
     @group_id = retrieve_group_id
+    @default_important_days = retrieve_default_important_days
   end
 
   def add_user?(user)
@@ -63,5 +64,14 @@ class AppConfig
   def retrieve_channel_id
     channel_id = '-1001482906311'
     channel_id
+  end
+
+  def retrieve_default_important_days
+    today = Date.today
+    {
+      Christmas: [Date.parse("25/12/#{today.year}"), 'Wishing you a Merry Christmas', 'B'],
+      Fathers_Day: [Date.parse("21/06/#{today.year}"), 'Happy Father\'s day', 'M'],
+      Mothers_Day: [Date.parse("10/05/#{today.year}"), 'Happy Mother\'s day', 'F']
+    }
   end
 end
