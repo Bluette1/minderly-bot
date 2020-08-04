@@ -20,6 +20,15 @@ This is a capstone project at the end of the main Ruby curriculum at [Microverse
 
 ### Run instructions 
 -  You can clone the GitHub repo and type the following commands in the terminal to run the bot locally 
+#### Setting Environment Variables
+- You can set environment variables locally by creating `.env` file with the following
+   ```
+    token='bot_token'
+    group_id='group_id'
+    channel_id='channel_id'
+    default_chat_id=chat_id
+    ```
+  -  Then run the following commands in the terminal inside the project's root directory
     ```
     bundle install
     ruby ./bin/bot_runner.rb
@@ -67,7 +76,6 @@ Make sure the bot is running
 - Github: [@Bluette1](https://github.com/Bluette1)
 - Twitter: [@MaryleneSawyer](https://twitter.com/MaryleneSawyer)
 - Linkedin: [Marylene Sawyer](https://www.linkedin.com/in/marylene-sawyer-b4ba1295/)
-
 
 # Acknowledgements
 - [Creating a Bot using the Telegram Bot API](https://tutorials.botsfloor.com/creating-a-bot-using-the-telegram-bot-api-5d3caed3266d#.13ywsygju)
