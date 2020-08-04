@@ -21,10 +21,13 @@ class FeedMessenger
   def send_feed(user = nil)
     if user.nil?
       Thread.new do
+        sleep(60)
+        check_news
         loop do
-          check_news
+          # check_news
           interval = 3600
           sleep(interval)
+          check_news
         end
       end
     else
