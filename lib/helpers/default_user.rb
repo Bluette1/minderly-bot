@@ -1,9 +1,12 @@
 require_relative '../user'
+require_relative '../app_config'
 
 class DefaultUser
   def self.retrieve
+    config = AppConfig.new
+
     User.new({
-               chat_id: 1_168_103_238,
+               chat_id: config.default_chat_id,
                first_name: 'Marylene',
 
                last_name: 'Sawyer',

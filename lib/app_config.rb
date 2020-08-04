@@ -1,12 +1,13 @@
 require 'dotenv/load'
 class AppConfig
-  attr_reader :users, :token, :commands, :channel_id, :group_id, :default_important_days
+  attr_reader :users, :token, :commands, :channel_id, :group_id, :default_important_days, :default_chat_id
 
   def initialize
     @users = []
     @token = retrieve_token
     @commands = retrieve_commands
-    @channel_id = retrieve_channel_id
+    @default_chat_id = retrieve_default_chat_id
+    @channel_id = retrieve_channel_id # default channel_id
     @group_id = retrieve_group_id
     @default_important_days = retrieve_default_important_days
   end
@@ -42,11 +43,16 @@ class AppConfig
     ENV['token']
   end
 
+  def retrieve_default_chat_id
+    ENV['default_chat_id'].to_i
+  end
+
   def retrieve_commands
     commands = [
       '/start',
       '/help',
       '/stop',
+      '/news',
       '/add_my_birthday',
       '/add_birthday',
       '/add_anniversary',

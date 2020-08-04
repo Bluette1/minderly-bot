@@ -18,26 +18,25 @@ class FeedMessenger
     send_feed
   end
 
-  def send_feed(user = nil)
-    if user.nil?
+  def send_feed(chat_id = nil)
+    if chat_id.nil?
       Thread.new do
         sleep(60)
         check_news
         loop do
-          # check_news
           interval = 3600
           sleep(interval)
           check_news
         end
       end
     else
-      check_news user
+      check_news chat_id
     end
   end
 
   private
 
-  def check_news(user = nil)
+  def check_news(chat_id = nil)
     @urls.each do |url|
       news = {}
       URI.parse(url).open do |rss|
@@ -47,10 +46,11 @@ class FeedMessenger
           title = item.title
           news[title.to_sym] = item.link
         end
-        if user.nil?
+
+        if chat_id.nil?
           send_to_users news, channel
         else
-          send_to_users news, channel, user
+          send_to_users news, channel, chat_id
         end
       end
     end
@@ -65,21 +65,21 @@ class FeedMessenger
     channel
   end
 
-  def send_to_users(news, channel, user = nil)
+  def send_to_users(news, channel, chat_id = nil)
     users = config.users
     choice = rand(5)
     news_item = choose_news_item choice, news, channel
-    if user.nil?
-      users.each do |user| # rubocop:todo Lint/ShadowingOuterLocalVariable
-        feed user, news_item
+    if chat_id.nil?
+      users.each do |user|
+        feed user.chat_id, news_item
       end
     else
-      feed user, news_item
+      feed chat_id, news_item
     end
   end
 
-  def feed(user, news_item)
-    send_rss news_item, user.chat_id
+  def feed(chat_id, news_item)
+    send_rss news_item, chat_id
     send_rss news_item, config.group_id
     send_rss news_item, config.channel_id
   end

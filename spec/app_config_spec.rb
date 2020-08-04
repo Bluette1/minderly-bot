@@ -12,6 +12,7 @@ describe AppConfig do
         '/start',
         '/help',
         '/stop',
+        '/news',
         '/add_my_birthday',
         '/add_birthday',
         '/add_anniversary',
