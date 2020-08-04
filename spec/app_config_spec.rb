@@ -1,5 +1,6 @@
 require_relative '../lib/app_config'
 require_relative '../lib/user'
+require 'dotenv/load'
 
 describe AppConfig do
   let(:config) { AppConfig.new }
@@ -7,7 +8,7 @@ describe AppConfig do
   describe '#initialise' do
     it 'returns the correct instance variables' do
       expect(config.users).to eq []
-      expect(config.instance_variable_get(:@token)).to eq '1275428552:AAF5BvjOOhCanGGNg6Qk5pPfVW0yjlmKi7s'
+      expect(config.instance_variable_get(:@token)).to eq ENV['token']
       commands = [
         '/start',
         '/help',
@@ -20,8 +21,9 @@ describe AppConfig do
         '/update'
       ]
       expect(config.commands).to eq(commands)
-      expect(config.group_id).to eq('-485549964')
-      expect(config.channel_id).to eq('-1001482906311')
+      expect(config.group_id).to eq(ENV['group_id'])
+      expect(config.channel_id).to eq(ENV['channel_id'])
+      expect(config.default_chat_id).to eq(ENV['default_chat_id'].to_i)
     end
   end
 

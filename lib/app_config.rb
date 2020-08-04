@@ -1,4 +1,5 @@
 require 'dotenv/load'
+
 class AppConfig
   attr_reader :users, :token, :commands, :channel_id, :group_id, :default_important_days, :default_chat_id
 
