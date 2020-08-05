@@ -42,7 +42,7 @@ class ImportantDayChecker
     end
   end
 
-  def check_default_important_days(user = nil)
+  def check_default_important_days(user = nil) # rubocop:todo Metrics/CyclomaticComplexity
     days = config.default_important_days
     days.each do |_day, details|
       next unless (today.month == details[0].month) && (today.day == details[0].day)
@@ -51,8 +51,8 @@ class ImportantDayChecker
       send_message user.chat_id, text_user unless user.nil? || user.sex != details[2]
 
       text_group = (details[1] + '!').center(55, '*')
-      send_message config.group_id, text_group
-      send_message config.channel_id, text_group
+      send_message config.group_id, text_group unless config.group_id.nil?
+      send_message config.channel_id, text_group unless config.channel_id.nil?
     end
   end
 
@@ -79,8 +79,8 @@ class ImportantDayChecker
 
       text = "Happy #{day}, #{name}!".center(60, '*')
       send_message chat_id, text
-      send_message config.group_id, text
-      send_message config.channel_id, text
+      send_message config.group_id, text unless config.group_id.nil?
+      send_message config.channel_id, text unless config.channel_id.nil?
     end
   end
 

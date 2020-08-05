@@ -42,6 +42,8 @@ Make sure the bot is running
 - In order to use MinderlyBot one has to have a Telegram account.
 - Ordinary users are able to interact with the bot via their Telegram accounts.
 - The bot is also able to post messages to channels and groups if it is added as an administrator.
+- You can also subscribe channels as users, and channels as well as group members are able to interact
+  with the bot.
 
 ### Available commands
 - Please enter any of the following commands: ["/start", "/help", "/stop", "/add_my_birthday", "/add_birthday", "/add_anniversary", "/subscribe", "/update"]

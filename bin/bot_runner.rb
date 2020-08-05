@@ -7,11 +7,17 @@ require_relative '../lib/feed_messenger'
 require_relative '../lib/helpers/default_user'
 
 config = AppConfig.new
-if config.add_user?(DefaultUser.retrieve)
+begin
+  config.add_user?(DefaultUser.retrieve)
   puts 'Default user successfully added'
-else
+rescue StandardError => e
   puts 'Failed to add default user'
 end
+# if config.add_user?(DefaultUser.retrieve)
+#   puts 'Default user successfully added'
+# else
+#   puts 'Failed to add default user'
+# end
 
 token = config.token
 
@@ -32,8 +38,8 @@ Telegram::Bot::Client.run(token) do |bot|
     }
 
     messagehandler.update_params(options)
-
-    puts "@#{message.from.username}: #{message.text}"
+    user_name = message.from.nil? ? '' : message.from.username
+    puts "@#{user_name}: #{message.text}"
 
     messagehandler.handle
   end

@@ -85,7 +85,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     greetings = %w[
       bonjour hola hallo sveiki namaste shalom salaam szia halo ciao
     ]
-    send_message "#{greetings.sample.capitalize}, #{message.from.first_name}!\n Enter /help for options."
+    first_name = message.from.nil? ? '' : ', ' + message.from.first_name
+    send_message "#{greetings.sample.capitalize}#{first_name}!\n Enter /help for options."
   end
 
   def send_message(text)
@@ -243,7 +244,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     if @config.add_user?(user)
       send_message 'Your subscription was successful.'
       @day_checker.check_today(user)
-      # @feeder = FeedMessenger.new(config: config, bot: bot)
       @feeder.send_feed(user.chat_id)
 
     else
@@ -252,6 +252,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
+  # rubocop:todo Metrics/PerceivedComplexity
+  # rubocop:todo Metrics/CyclomaticComplexity
   def add_my_birthday # rubocop:todo Metrics/MethodLength
     if message.text.nil?
       prompt_user '/add_my_birthday', true, false, false
@@ -260,9 +262,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @user_details[:chat_id] = message.chat.id
       @user_details[:sex] = @sex
       valid = true
-      @user_details[:first_name] = message.from.first_name
-      @user_details[:last_name] = message.from.last_name
-      @user_details[:username] = message.from.username
+      first_name = message.from.nil? ? 'channel' : message.from.first_name
+      @user_details[:first_name] = first_name
+      last_name = message.from.nil? ? '' : message.from.last_name
+      @user_details[:last_name] = last_name
+      user_name = message.from.nil? ? '' : message.from.username
+      @user_details[:username] = user_name
       begin
         @user_details[:birthday] = Date.parse(message.text.strip)
       rescue StandardError => e
@@ -281,6 +286,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       end
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def add_birthday # rubocop:todo Metrics/MethodLength
     if message.text.nil?
@@ -352,7 +359,6 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
                    ' to update your birthday, and add birthdays and anniversaries to be'\
                    ' reminded of respectively.'
       @day_checker.check_today(new_user)
-      # @feeder = FeedMessenger.new(config: config, bot: bot)
       @feeder.send_feed(new_user.chat_id)
     else
       send_message "The user subscription doesn't exist. Please enter "\

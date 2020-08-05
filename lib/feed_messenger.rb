@@ -80,8 +80,10 @@ class FeedMessenger
 
   def feed(chat_id, news_item)
     send_rss news_item, chat_id
-    send_rss news_item, config.group_id
-    send_rss news_item, config.channel_id
+
+    send_rss news_item, config.group_id unless config.group_id.nil?
+
+    send_rss news_item, config.channel_id unless config.channel_id.nil?
   end
 
   def choose_news_item(choice, news, channel)
