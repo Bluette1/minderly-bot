@@ -11,13 +11,8 @@ begin
   config.add_user?(DefaultUser.retrieve)
   puts 'Default user successfully added'
 rescue StandardError => e
-  puts 'Failed to add default user'
+  puts 'Failed to add default user', e
 end
-# if config.add_user?(DefaultUser.retrieve)
-#   puts 'Default user successfully added'
-# else
-#   puts 'Failed to add default user'
-# end
 
 token = config.token
 
