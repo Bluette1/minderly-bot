@@ -51,6 +51,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     command
   end
 
+  # rubocop:todo Metrics/PerceivedComplexity
+  # rubocop:todo Metrics/MethodLength
   def handle_commands(command) # rubocop:todo Metrics/CyclomaticComplexity
     case command
     when '/start'
@@ -59,6 +61,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       send_message "Bye, #{message.from.first_name}"
     when '/help'
       send_message "Please enter any of the following commands: #{@commands}"
+    when '/news'
+      handle_news
     when '/subscribe'
       handle_subscribe command
     when '/update'
@@ -74,12 +78,15 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
 
     end
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def greet_user
     greetings = %w[
       bonjour hola hallo sveiki namaste shalom salaam szia halo ciao
     ]
-    send_message "#{greetings.sample.capitalize}, #{message.from.first_name}!\n Enter /help for options."
+    first_name = message.from.nil? ? '' : ', ' + message.from.first_name
+    send_message "#{greetings.sample.capitalize}#{first_name}!\n Enter /help for options."
   end
 
   def send_message(text)
@@ -225,15 +232,19 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       subscribe_user
     end
   end
+
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
+  def handle_news
+    @feeder.send_feed(message.chat.id)
+  end
 
   def subscribe_user
     user = User.new(@user_details)
     if @config.add_user?(user)
       send_message 'Your subscription was successful.'
       @day_checker.check_today(user)
-      @feeder.send_feed(user)
+      @feeder.send_feed(user.chat_id)
 
     else
       send_message "You are already subscribed, please enter '/update'"\
@@ -241,6 +252,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
     end
   end
 
+  # rubocop:todo Metrics/PerceivedComplexity
+  # rubocop:todo Metrics/CyclomaticComplexity
   def add_my_birthday # rubocop:todo Metrics/MethodLength
     if message.text.nil?
       prompt_user '/add_my_birthday', true, false, false
@@ -249,9 +262,12 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       @user_details[:chat_id] = message.chat.id
       @user_details[:sex] = @sex
       valid = true
-      @user_details[:first_name] = message.from.first_name
-      @user_details[:last_name] = message.from.last_name
-      @user_details[:username] = message.from.username
+      first_name = message.from.nil? ? 'channel' : message.from.first_name
+      @user_details[:first_name] = first_name
+      last_name = message.from.nil? ? '' : message.from.last_name
+      @user_details[:last_name] = last_name
+      user_name = message.from.nil? ? '' : message.from.username
+      @user_details[:username] = user_name
       begin
         @user_details[:birthday] = Date.parse(message.text.strip)
       rescue StandardError => e
@@ -270,6 +286,8 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
       end
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def add_birthday # rubocop:todo Metrics/MethodLength
     if message.text.nil?
@@ -341,7 +359,7 @@ class MessageHandler # rubocop:todo Metrics/ClassLength
                    ' to update your birthday, and add birthdays and anniversaries to be'\
                    ' reminded of respectively.'
       @day_checker.check_today(new_user)
-      @feeder.send_feed(new_user)
+      @feeder.send_feed(new_user.chat_id)
     else
       send_message "The user subscription doesn't exist. Please enter "\
        '/subscribe to subscribe'

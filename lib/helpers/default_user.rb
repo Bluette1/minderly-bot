@@ -1,11 +1,14 @@
 require_relative '../user'
+require_relative '../app_config'
 
 class DefaultUser
   def self.retrieve
-    User.new({
-               chat_id: 1_168_103_238,
-               first_name: 'Marylene',
+    config = AppConfig.new
+    raise StandardError, 'Default chat id is nil' if config.default_chat_id.nil?
 
+    User.new({
+               chat_id: config.default_chat_id,
+               first_name: 'Marylene',
                last_name: 'Sawyer',
                sex: 'F',
                birthday: Date.parse('19/04/1980'),

@@ -1,11 +1,14 @@
+require 'dotenv/load'
+
 class AppConfig
-  attr_reader :users, :token, :commands, :channel_id, :group_id, :default_important_days
+  attr_reader :users, :token, :commands, :channel_id, :group_id, :default_important_days, :default_chat_id
 
   def initialize
     @users = []
     @token = retrieve_token
     @commands = retrieve_commands
-    @channel_id = retrieve_channel_id
+    @default_chat_id = retrieve_default_chat_id
+    @channel_id = retrieve_channel_id # default channel_id
     @group_id = retrieve_group_id
     @default_important_days = retrieve_default_important_days
   end
@@ -38,8 +41,11 @@ class AppConfig
   private
 
   def retrieve_token
-    token = '1275428552:AAF5BvjOOhCanGGNg6Qk5pPfVW0yjlmKi7s'
-    token
+    ENV['token']
+  end
+
+  def retrieve_default_chat_id
+    ENV['default_chat_id'].to_i
   end
 
   def retrieve_commands
@@ -47,6 +53,7 @@ class AppConfig
       '/start',
       '/help',
       '/stop',
+      '/news',
       '/add_my_birthday',
       '/add_birthday',
       '/add_anniversary',
@@ -57,13 +64,11 @@ class AppConfig
   end
 
   def retrieve_group_id
-    group_id = '-485549964'
-    group_id
+    ENV['group_id']
   end
 
   def retrieve_channel_id
-    channel_id = '-1001482906311'
-    channel_id
+    ENV['channel_id']
   end
 
   def retrieve_default_important_days
