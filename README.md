@@ -46,7 +46,7 @@ Make sure the bot is running
   with the bot.
 
 ### Available commands
-- Please enter any of the following commands: ["/start", "/help", "/stop", "/add_my_birthday", "/add_birthday", "/add_anniversary", "/subscribe", "/update"]
+- Please enter any of the following commands: ["/start", "/help", "/stop", "/news", "/add_my_birthday", "/add_birthday", "/add_anniversary", "/subscribe", "/update"]
 
 ### Possible errors
 - An incorrect entry for the date might throw a `Date.parse` error: 
