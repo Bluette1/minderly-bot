@@ -16,7 +16,7 @@ This is a capstone project at the end of the main Ruby curriculum at [Microverse
 
 ## Live Demo
 
-[Live Demo]()
+[Live Demo](https://t.me/xextris_bot)
 
 ### Run instructions 
 -  You can clone the GitHub repo and type the following commands in the terminal to run the bot locally 
